@@ -14,10 +14,24 @@ var formSubmitHandler = function (event) {
 
     forecastContainerEl.textContent = '';
     cityInputEl.value = '';
+
+    createHistoryButton(searchCity);
+
   } else {
     alert('Please enter a valid city name');
   }
 };
+
+function createHistoryButton(searchCity){
+  var cityButtonEL = document.createElement("button");
+  cityButtonEL.setAttribute("class", "btn");
+  cityButtonEL.setAttribute("data-city", searchCity)
+  
+  cityButtonsEl.appendChild(cityButtonEL);  
+}
+
+
+
 
 var buttonClickHandler = function (event) {
   var buttonCity = event.target.getAttribute('data-city');
@@ -30,7 +44,7 @@ var buttonClickHandler = function (event) {
 };
 
 function getForecastData(searchCity){
-  var testUrl = "https://api.openweathermap.org/data/2.5/forecast?q=" + searchCity + "&appid=78e5804b571e08c79ef4568f6738f1c2"
+  var testUrl = "https://api.openweathermap.org/data/2.5/forecast?q=" + searchCity +"&units=imperial&appid=78e5804b571e08c79ef4568f6738f1c2"
 
   fetch(testUrl).then(function (response) {
     if (response.ok) {
@@ -141,7 +155,7 @@ var displayForecast = function (forecastInfo, searchTerm) {
 // };
 
 
-getForecastData("New york");
+// getForecastData("New york");
 
 cityFormEl.addEventListener('submit', formSubmitHandler);
 cityButtonsEl.addEventListener('click', buttonClickHandler);

@@ -15,23 +15,27 @@ var formSubmitHandler = function (event) {
     forecastContainerEl.textContent = '';
     cityInputEl.value = '';
 
-    createHistoryButton(searchCity);
+    displayHistoryButtons(searchCity);
 
   } else {
     alert('Please enter a valid city name');
   }
 };
 
-function createHistoryButton(searchCity){
-  var cityButtonEL = document.createElement("button");
-  cityButtonEL.setAttribute("class", "btn");
-  cityButtonEL.setAttribute("data-city", searchCity)
+
+function displayHistoryButtons(queryCity){
+  var searchCitiesArray = localStorage.getItem("searchCities") || [];
+  searchCitiesArray.push(queryCity);
+  localStorage.setItem("searchCities", searchCitiesArray);
   
-  cityButtonsEl.appendChild(cityButtonEL);  
+  for(var i = 0; i < 10 && i < searchCitiesArray.length; i++){
+    var cityButtonEL = document.createElement("button");
+    cityButtonEL.setAttribute("class", "btn");
+    cityButtonEL.setAttribute("data-city", searchCity)
+    cityButtonEL.innerHTML = searchCity;
+    cityButtonsEl.appendChild(cityButtonEL);  
+  }
 }
-
-
-
 
 var buttonClickHandler = function (event) {
   var buttonCity = event.target.getAttribute('data-city');
@@ -50,9 +54,6 @@ function getForecastData(searchCity){
     if (response.ok) {
       response.json().then(function (data) {
         console.log(data);
-        // for(var i = 0; i < 5 ; i++){
-        //   console.log(data.list[i*8].dt_txt +": " + data.list[i*8].main.temp)  
-        // }
         displayForecast(data, searchCity);
       });
     } else {
@@ -99,8 +100,6 @@ var displayForecast = function (forecastInfo, searchTerm) {
     return;
   }
 
-  // console.log(forecastInfo.list[0].main.temp);
-
   citySearchTerm.textContent = searchTerm;
 
   for (var i = 0; i < 5; i++) {
@@ -114,17 +113,17 @@ var displayForecast = function (forecastInfo, searchTerm) {
 
     focecastEl.appendChild(titleEl);
 
-    var statusEl = document.createElement('span');
-    statusEl.classList = 'flex-row align-center';
+    // var statusEl = document.createElement('span');
+    // statusEl.classList = 'flex-row align-center';
 
-    // if (forecastInfo[i].open_issues_count > 0) {
-    //   statusEl.innerHTML =
-    //     "<i class='fas fa-times status-icon icon-danger'></i>" + forecastDays[i].open_issues_count + ' issue(s)';
-    // } else {
-    //   statusEl.innerHTML = "<i class='fas fa-check-square status-icon icon-success'></i>";
-    // }
+    // // if (forecastInfo[i].open_issues_count > 0) {
+    // //   statusEl.innerHTML =
+    // //     "<i class='fas fa-times status-icon icon-danger'></i>" + forecastDays[i].open_issues_count + ' issue(s)';
+    // // } else {
+    // //   statusEl.innerHTML = "<i class='fas fa-check-square status-icon icon-success'></i>";
+    // // }
 
-    focecastEl.appendChild(statusEl);
+    // focecastEl.appendChild(statusEl);
 
     forecastContainerEl.appendChild(focecastEl);
   }

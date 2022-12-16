@@ -23,10 +23,13 @@ var formSubmitHandler = function (event) {
 
 
 function displayHistoryButtons(queryCity){
-  var searchCitiesArray = localStorage.getItem("searchCities") || [];
-  searchCitiesArray.push(queryCity);
-  localStorage.setItem("searchCities", searchCitiesArray);
   
+  
+  var searchCitiesArray = JSON.parse(localStorage.getItem("searchCities")) || [];
+  searchCitiesArray.push(queryCity);
+  localStorage.setItem("searchCities", JSON.stringify(searchCitiesArray));
+
+
   for(var i = 0; i < 10 && i < searchCitiesArray.length; i++){
     var cityButtonEL = document.createElement("button");
     cityButtonEL.setAttribute("class", "btn");
@@ -41,7 +44,6 @@ var buttonClickHandler = function (event) {
 
   if (buttonCity) {
     getForecastData(buttonCity);
-
     forecastContainerEl.textContent = '';
   }
 };

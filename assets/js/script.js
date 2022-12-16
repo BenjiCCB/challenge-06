@@ -10,12 +10,11 @@ var formSubmitHandler = function (event) {
   var searchCity = cityInputEl.value.trim();
 
   if (searchCity) {
+    displayHistoryButtons(searchCity);
     getForecastData(searchCity);
 
     forecastContainerEl.textContent = '';
     cityInputEl.value = '';
-
-    displayHistoryButtons(searchCity);
 
   } else {
     alert('Please enter a valid city name');
@@ -31,8 +30,8 @@ function displayHistoryButtons(queryCity){
   for(var i = 0; i < 10 && i < searchCitiesArray.length; i++){
     var cityButtonEL = document.createElement("button");
     cityButtonEL.setAttribute("class", "btn");
-    cityButtonEL.setAttribute("data-city", searchCity)
-    cityButtonEL.innerHTML = searchCity;
+    cityButtonEL.setAttribute("data-city", queryCity)
+    cityButtonEL.innerHTML = queryCity;
     cityButtonsEl.appendChild(cityButtonEL);  
   }
 }

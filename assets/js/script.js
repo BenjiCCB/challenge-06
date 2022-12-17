@@ -83,13 +83,16 @@ var displayForecast = function (forecastInfo, searchTerm) {
     var dateFormatted = dayjs(forecastInfo.list[i*8].dt_txt).format('dddd MMMM D');
     var cityName = forecastInfo.city.name;
     var temp = (forecastInfo.list[i*8].main.temp).toFixed(0);
-    var forecastItem = cityName + " - " + dateFormatted + "... " + temp + "\u00B0";
+    
+    var infoItem = cityName + " - " + dateFormatted + "... ";
 
     var forecastEl = document.createElement('div');
     forecastEl.classList = 'list-item flex-row justify-space-between align-center';
 
-    var forecastSpan = document.createElement('span');
-    forecastSpan.textContent = forecastItem;
+    var topLineEl = document.createElement('div');
+    
+    var infoSpan = document.createElement('span');
+    infoSpan.textContent = infoItem;
     
     var forecastIcon = document.createElement('span');
     
@@ -100,9 +103,23 @@ var displayForecast = function (forecastInfo, searchTerm) {
     } else {
       forecastIcon.innerHTML = "<i class='fas fa-cloud-rain'></i>"
     }
-    forecastEl.appendChild(forecastSpan);
-    forecastEl.appendChild(forecastIcon);
+
+    topLineEl.appendChild(infoSpan);
+    topLineEl.appendChild(forecastIcon);
+    forecastEl.appendChild(topLineEl);
+
+    var tempEl = document.createElement('div');
+    tempEl.classList = 'list-item flex-row justify-space-between align-center';
+
+    tempItem = temp + "\u00B0"
+    var tempSpan = document.createElement('span');
+    tempSpan.textContent = tempItem;
+
+    tempEl.appendChild(tempSpan);
+    forecastEl.appendChild(tempEl);
+
     forecastContainerEl.appendChild(forecastEl);
+
   }
 }
 

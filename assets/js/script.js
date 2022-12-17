@@ -3,8 +3,6 @@ var cityButtonsEl = document.querySelector('#city-buttons');
 var cityInputEl = document.querySelector('#cityname');
 var forecastContainerEl = document.querySelector('#forecasts-container');
 var citySearchTerm = document.querySelector('#city-search-term');
-var subtitleText = document.querySelector('.subtitle');
-
 
 // Form
 var formSubmitHandler = function (event) {
@@ -16,7 +14,6 @@ var formSubmitHandler = function (event) {
     updateHistoryButtons(searchCity);
     getForecastData(searchCity);
 
-    // subtitleText.style.display = 'inline'
     forecastContainerEl.textContent = '';
     cityInputEl.value = '';
 
@@ -50,7 +47,6 @@ function updateHistoryButtons(queryCity){
 
 var buttonClickHandler = function (event) {
   var buttonCity = event.target.getAttribute('data-city');
-  // subtitleText.style.display = 'inline'
 
   if (buttonCity) {
     getForecastData(buttonCity);
@@ -60,9 +56,9 @@ var buttonClickHandler = function (event) {
 
 // Forecast Data
 function getForecastData(searchCity){
-  var testUrl = "https://api.openweathermap.org/data/2.5/forecast?q=" + searchCity +"&units=imperial&appid=78e5804b571e08c79ef4568f6738f1c2"
+  var searchUrl = "https://api.openweathermap.org/data/2.5/forecast?q=" + searchCity +"&units=imperial&appid=78e5804b571e08c79ef4568f6738f1c2"
 
-  fetch(testUrl).then(function (response) {
+  fetch(searchUrl).then(function (response) {
     if (response.ok) {
       response.json().then(function (data) {
         console.log(data);
@@ -84,34 +80,31 @@ var displayForecast = function (forecastInfo, searchTerm) {
   citySearchTerm.textContent = searchTerm;
 
   for (var i = 0; i < 5; i++) {
-    var forecastItem = forecastInfo.city.name + " - " + forecastInfo.list[i*8].dt_txt + "... " + forecastInfo.list[i*8].main.temp;
+    var dateFormatted = dayjs(forecastInfo.list[i*8].dt_txt).format('dddd MMMM D');
+    var cityName = forecastInfo.city.name;
+    var temp = (forecastInfo.list[i*8].main.temp).toFixed(0);
+    var forecastItem = cityName + " - " + dateFormatted + "... " + temp + "\u00B0";
 
-    console.log("1671256800".format('MMM D'));
+    var forecastEl = document.createElement('div');
+    forecastEl.classList = 'list-item flex-row justify-space-between align-center';
 
-    var focecastEl = document.createElement('div');
-    focecastEl.classList = 'list-item flex-row justify-space-between align-center';
-
-    var titleEl = document.createElement('span');
-    titleEl.textContent = forecastItem;
-
-    focecastEl.appendChild(titleEl);
-
-    // var statusEl = document.createElement('span');
-    // statusEl.classList = 'flex-row align-center';
-
-    // // if (forecastInfo[i].open_issues_count > 0) {
-    // //   statusEl.innerHTML =
-    // //     "<i class='fas fa-times status-icon icon-danger'></i>" + forecastDays[i].open_issues_count + ' issue(s)';
-    // // } else {
-    // //   statusEl.innerHTML = "<i class='fas fa-check-square status-icon icon-success'></i>";
-    // // }
-
-    // focecastEl.appendChild(statusEl);
-
-    forecastContainerEl.appendChild(focecastEl);
+    var forecastSpan = document.createElement('span');
+    forecastSpan.textContent = forecastItem;
+    
+    var forecastIcon = document.createElement('span');
+    
+    if (forecastInfo.list[i*8].weather[0].main == "Clear"){
+      forecastIcon.innerHTML = "<i class='fas fa-sun'></i>"
+    } else if(forecastInfo.list[i*8].weather[0].main == "Clouds"){
+      forecastIcon.innerHTML = "<i class='fas fa-cloud'></i>"
+    } else {
+      forecastIcon.innerHTML = "<i class='fas fa-cloud-rain'></i>"
+    }
+    forecastEl.appendChild(forecastSpan);
+    forecastEl.appendChild(forecastIcon);
+    forecastContainerEl.appendChild(forecastEl);
   }
-};
-
+}
 
 displayHistoryButtons();
 cityFormEl.addEventListener('submit', formSubmitHandler);

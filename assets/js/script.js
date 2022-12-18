@@ -80,46 +80,55 @@ var displayForecast = function (forecastInfo, searchTerm) {
   citySearchTerm.textContent = searchTerm;
 
   for (var i = 0; i < 5; i++) {
-    var dateFormatted = dayjs(forecastInfo.list[i*8].dt_txt).format('dddd MMMM D');
-    var cityName = forecastInfo.city.name;
-    var temp = (forecastInfo.list[i*8].main.temp).toFixed(0);
     
-    var infoItem = cityName + " - " + dateFormatted + "... ";
+    console.log(forecastInfo.city.name);
+    var cityName = forecastInfo.city.name;
+    var forecastDay = forecastInfo.list[i*8]
+    var dateFormatted = dayjs(forecastDay.dt_txt).format('dddd MMMM D');
+    var temp = (forecastDay.main.temp).toFixed(0);
+    
+    // forecast top line (city name, date, temp, & icon)
+    var forecastInfo = cityName + " - " + dateFormatted + "... " + temp + "\u00B0";
 
     var forecastEl = document.createElement('div');
-    forecastEl.classList = 'list-item flex-row justify-space-between align-center';
-
-    var topLineEl = document.createElement('div');
+    forecastEl.classList = 'list-item';
     
-    var infoSpan = document.createElement('span');
-    infoSpan.textContent = infoItem;
+    var topLine = document.createElement('div');
+    topLine.classList = 'flex-row justify-space-between align-center';
+    var forecastSpan = document.createElement('span');
+    forecastSpan.textContent = forecastInfo;
     
     var forecastIcon = document.createElement('span');
     
-    if (forecastInfo.list[i*8].weather[0].main == "Clear"){
+    if (forecastDay.weather[0].main == "Clear"){
       forecastIcon.innerHTML = "<i class='fas fa-sun'></i>"
-    } else if(forecastInfo.list[i*8].weather[0].main == "Clouds"){
+    } else if(forecastDay.weather[0].main == "Clouds"){
       forecastIcon.innerHTML = "<i class='fas fa-cloud'></i>"
     } else {
       forecastIcon.innerHTML = "<i class='fas fa-cloud-rain'></i>"
     }
 
-    topLineEl.appendChild(infoSpan);
-    topLineEl.appendChild(forecastIcon);
-    forecastEl.appendChild(topLineEl);
+    topLine.appendChild(forecastSpan);
+    topLine.appendChild(forecastIcon);
 
-    var tempEl = document.createElement('div');
-    tempEl.classList = 'list-item flex-row justify-space-between align-center';
+    // humidity & windspeed
 
-    tempItem = temp + "\u00B0"
-    var tempSpan = document.createElement('span');
-    tempSpan.textContent = tempItem;
+    var humidity = forecastDay.main.humidity;
+    var wind = forecastDay.wind.speed;
 
-    tempEl.appendChild(tempSpan);
-    forecastEl.appendChild(tempEl);
+    var humidityEl = document.createElement('div');
+    humidityEl.textContent = "Humidity: " + humidity;
+
+    var windEl = document.createElement('div');
+    windEl.textContent = "Wind: " + wind;
+
+    // add elements to forecastEl and add forecastEL to container div
+
+    forecastEl.appendChild(topLine);
+    forecastEl.appendChild(humidityEl);
+    forecastEl.appendChild(windEl);
 
     forecastContainerEl.appendChild(forecastEl);
-
   }
 }
 

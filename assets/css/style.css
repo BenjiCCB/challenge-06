@@ -25,6 +25,22 @@ body {
   margin-bottom: 20px;
 }
 
+.topline{
+  font-size: 1.5em;
+}
+
+.tempEl{
+  font-size: 2em;
+}
+
+#forecasts-container div:first-child{
+  background: rgb(69, 148, 175);
+}
+
+/* .list-item:hover {
+  background-color: var(--dark);
+} */
+
 h1,
 h2,
 h3,

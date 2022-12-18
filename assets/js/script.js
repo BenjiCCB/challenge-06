@@ -85,7 +85,6 @@ var displayForecast = function (forecastInfo, searchTerm) {
     var cityName = forecastInfo.city.name;
     var forecastDay = forecastInfo.list[i*8];
     var dateFormatted = dayjs(forecastDay.dt_txt).format('dddd MMMM D');
-    var temp = (forecastDay.main.temp).toFixed(0);
     
     // forecast top line (cityname/date/temp & icon)
     var forecastEl = document.createElement('div');
@@ -93,9 +92,9 @@ var displayForecast = function (forecastInfo, searchTerm) {
     
       //main info
     var topLine = document.createElement('div');
-    topLine.classList = 'flex-row justify-space-between align-center';
+    topLine.classList = 'topline flex-row justify-space-between align-center';
     
-    var forecastTextLine = cityName + " - " + dateFormatted + "... " + temp + "\u00B0";
+    var forecastTextLine = cityName + " - " + dateFormatted;
     var infoSpan = document.createElement('span');
     infoSpan.textContent = forecastTextLine;
     
@@ -113,10 +112,14 @@ var displayForecast = function (forecastInfo, searchTerm) {
     topLine.appendChild(infoSpan);
     topLine.appendChild(forecastIcon);
 
-    // humidity & windspeed
-
+    // temp, humidity, & windspeed
+    var temp = (forecastDay.main.temp).toFixed(0) + "\u00B0";
     var humidity = forecastDay.main.humidity;
     var wind = forecastDay.wind.speed;
+
+    var tempEl = document.createElement('div');
+    tempEl.classList = 'tempEl';
+    tempEl.textContent = temp;
 
     var humidityEl = document.createElement('div');
     humidityEl.textContent = "Humidity: " + humidity;
@@ -127,6 +130,7 @@ var displayForecast = function (forecastInfo, searchTerm) {
     // add elements to forecastEl and forecastEL to container div
 
     forecastEl.appendChild(topLine);
+    forecastEl.appendChild(tempEl);
     forecastEl.appendChild(humidityEl);
     forecastEl.appendChild(windEl);
 

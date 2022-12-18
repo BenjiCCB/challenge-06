@@ -21,10 +21,12 @@ body {
   font-size: 16px;
 }
 
+/* results top text */
 .subtitle{
   margin-bottom: 20px;
 }
 
+/* all box styling */
 .topline{
   font-size: 1.5em;
 }
@@ -33,13 +35,26 @@ body {
   font-size: 2em;
 }
 
-#forecasts-container div:first-child{
+/* top box styling */
+#forecasts-container > div:first-child{
   background: rgb(69, 148, 175);
+  height: 200px;
 }
 
-/* .list-item:hover {
-  background-color: var(--dark);
-} */
+#forecasts-container > div:first-child > div:first-child{
+  font-weight: bold;
+  font-size: 2em;
+}
+
+#forecasts-container > div:first-child > div:nth-child(2) {
+  font-size: 3em;
+}
+
+
+#forecasts-container > div:first-child:hover{
+  background-color: rgb(26, 87, 105);
+}
+
 
 h1,
 h2,

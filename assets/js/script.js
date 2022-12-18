@@ -71,6 +71,7 @@ function getForecastData(searchCity){
 };
 
 
+// Display
 var displayForecast = function (forecastInfo, searchTerm) {
   if (forecastInfo.length === 0) {
     forecastContainerEl.textContent = 'No forecast data found.';
@@ -81,23 +82,24 @@ var displayForecast = function (forecastInfo, searchTerm) {
 
   for (var i = 0; i < 5; i++) {
     
-    console.log(forecastInfo.city.name);
     var cityName = forecastInfo.city.name;
-    var forecastDay = forecastInfo.list[i*8]
+    var forecastDay = forecastInfo.list[i*8];
     var dateFormatted = dayjs(forecastDay.dt_txt).format('dddd MMMM D');
     var temp = (forecastDay.main.temp).toFixed(0);
     
-    // forecast top line (city name, date, temp, & icon)
-    var forecastInfo = cityName + " - " + dateFormatted + "... " + temp + "\u00B0";
-
+    // forecast top line (cityname/date/temp & icon)
     var forecastEl = document.createElement('div');
     forecastEl.classList = 'list-item';
     
+      //main info
     var topLine = document.createElement('div');
     topLine.classList = 'flex-row justify-space-between align-center';
-    var forecastSpan = document.createElement('span');
-    forecastSpan.textContent = forecastInfo;
     
+    var forecastTextLine = cityName + " - " + dateFormatted + "... " + temp + "\u00B0";
+    var infoSpan = document.createElement('span');
+    infoSpan.textContent = forecastTextLine;
+    
+      // icon
     var forecastIcon = document.createElement('span');
     
     if (forecastDay.weather[0].main == "Clear"){
@@ -108,7 +110,7 @@ var displayForecast = function (forecastInfo, searchTerm) {
       forecastIcon.innerHTML = "<i class='fas fa-cloud-rain'></i>"
     }
 
-    topLine.appendChild(forecastSpan);
+    topLine.appendChild(infoSpan);
     topLine.appendChild(forecastIcon);
 
     // humidity & windspeed
@@ -122,7 +124,7 @@ var displayForecast = function (forecastInfo, searchTerm) {
     var windEl = document.createElement('div');
     windEl.textContent = "Wind: " + wind;
 
-    // add elements to forecastEl and add forecastEL to container div
+    // add elements to forecastEl and forecastEL to container div
 
     forecastEl.appendChild(topLine);
     forecastEl.appendChild(humidityEl);
